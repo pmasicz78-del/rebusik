@@ -1,0 +1,123 @@
+index.html
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Romantyczny rebus</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #fff;
+      color: #000;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .rebus {
+      position: relative;
+      z-index: 2;
+      font-size: 30px;
+      text-align: center;
+      line-height: 1.8;
+      margin-top: 15vh;
+    }
+
+    input {
+      margin-top: 20px;
+      padding: 10px 14px;
+      font-size: 18px;
+      border: 2px solid #ff5c8a;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 24px;
+      color: #c00040;
+    }
+
+    /* serduszka */
+    .heart {
+      position: absolute;
+      color: #ff3366;
+      animation: float 6s linear infinite;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh); opacity: 0; }
+      10% { opacity: 0.9; }
+      100% { transform: translateY(-10vh); opacity: 0; }
+    }
+
+    /* kotki */
+    .cat {
+      position: absolute;
+      bottom: 10px;
+      font-size: 28px;
+      animation: walk 12s linear infinite;
+    }
+
+    @keyframes walk {
+      0% { left: -10%; }
+      100% { left: 110%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="rebus">
+    🐴 🦉 🐱 🏠 🍎 🌙<br />
+    🐱 🦅 🦔<br />
+    <small>(pierwsza litera polskiej nazwy emoji)</small><br />
+
+    <input type="text" id="answer" placeholder="wpisz: kocham cie" />
+
+    <div class="message" id="msg"></div>
+  </div>
+
+  <script>
+    const input = document.getElementById('answer');
+    const msg = document.getElementById('msg');
+
+    input.addEventListener('input', () => {
+      const val = input.value.toLowerCase().replace(/\s+/g, '');
+      if (val === 'kochamcie' || val === 'kochamcię') {
+        msg.textContent = 'Wiedziałem, że dasz radę skarbie 💞';
+      } else {
+        msg.textContent = '';
+      }
+    });
+
+    function createHeart() {
+      const h = document.createElement('div');
+      h.className = 'heart';
+      h.textContent = '💗';
+      h.style.left = Math.random() * 100 + 'vw';
+      h.style.fontSize = 14 + Math.random() * 20 + 'px';
+      h.style.animationDuration = 4 + Math.random() * 4 + 's';
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 8000);
+    }
+
+    setInterval(createHeart, 350);
+
+    function createCat() {
+      const c = document.createElement('div');
+      c.className = 'cat';
+      c.textContent = '🐈';
+      c.style.bottom = 5 + Math.random() * 40 + 'px';
+      c.style.animationDuration = 10 + Math.random() * 8 + 's';
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 20000);
+    }
+
+    setInterval(createCat, 3000);
+  </script>
+
+</body>
+</html>
