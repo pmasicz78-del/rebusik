@@ -1,170 +1,133 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8" />
-  <title>Romantyczny rebus</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: black;
-      color: #ffb6c1;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
-      text-align: center;
-    }
+<meta charset="UTF-8" />
+<title>Rebus</title>
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  color: white;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
 
-    h1 {
-      margin-top: 40px;
-      font-size: 36px;
-    }
+#rebus {
+  text-align: center;
+  margin-top: 60px;
+  font-size: 40px;
+}
 
-    .rebus {
-      font-size: 40px;
-      margin: 30px 0;
-    }
+#inputBox {
+  display: block;
+  margin: 30px auto;
+  padding: 10px;
+  font-size: 18px;
+}
 
-    input {
-      padding: 12px;
-      font-size: 18px;
-      border-radius: 8px;
-      border: none;
-      outline: none;
-      text-align: center;
-    }
+#result {
+  text-align: center;
+  font-size: 24px;
+  margin-top: 20px;
+}
 
-    .message {
-      margin-top: 25px;
-      font-size: 26px;
-      display: none;
-    }
+#heartStage {
+  display: none;
+  text-align: center;
+  margin-top: 100px;
+  user-select: none;
+}
 
-    .big-heart {
-      display: none;
-      font-size: 120px;
-      cursor: pointer;
-      margin-top: 80px;
-    }
+#bigHeart {
+  font-size: 200px;
+  cursor: pointer;
+  user-select: none;
+}
 
-    .final-text {
-      display: none;
-      max-width: 800px;
-      margin: 80px auto 0 auto;
-      font-size: 24px;
-      line-height: 1.5;
-      color: #ffc0cb;
-    }
+#heartCounter {
+  margin-top: 20px;
+  font-size: 20px;
+}
 
-    .heart {
-      position: absolute;
-      color: red;
-      animation: float 6s linear infinite;
-      font-size: 24px;
-    }
+#finalText {
+  display: none;
+  text-align: center;
+  font-size: 24px;
+  max-width: 80%;
+  margin: 40px auto;
+}
 
-    .cat, .bear {
-      position: absolute;
-      font-size: 40px;
-      animation: walk 12s linear infinite;
-    }
+#train {
+  display: none;
+  position: absolute;
+  white-space: nowrap;
+  font-size: 36px;
+  top: 50%;
+  transform: translateY(-50%);
+  animation: moveTrain 20s linear 2;
+}
 
-    @keyframes float {
-      from { transform: translateY(100vh); opacity: 1; }
-      to { transform: translateY(-10vh); opacity: 0; }
-    }
-
-    @keyframes walk {
-      from { left: -50px; }
-      to { left: 110vw; }
-    }
-  </style>
+@keyframes moveTrain {
+  from { left: 100%; }
+  to { left: -200%; }
+}
+</style>
 </head>
 <body>
 
-  <h1 id="title">Rozwiąż rebus 💞</h1>
+<div id="rebus">🐄👓🧅🍔🍉🧲🧅🧵📐</div>
+<input id="inputBox" placeholder="tutaj piszesz kiciu" />
+<div id="result"></div>
 
-  <div class="rebus" id="rebus">🐄👓🧅🍔🍉🧲🧅🧵📐</div>
+<div id="heartStage">
+  <div id="bigHeart">💗</div>
+  <div id="heartCounter">Brawo zaszłaś już do ostatniego etapu wymagającego użycia ciężkiej funkcji życiowej „myślenia”💞</div>
+</div>
 
-  <input id="answer" placeholder="tutaj piszesz kiciu" />
+<div id="finalText">
+  dziękuje że jesteś, sprawiasz że zawsze czuje że moge na ciebie liczyć i że mam w tobie wsparcie doceniam wzytko co dla mnie robisz nawet nie wiesz jak wiele dla mnie zmaczysz
+</div>
 
-  <div class="message" id="msg">wiedziałem że dasz rade skarbie 💞</div>
+<div id="train">dziękuje kiciu za twoją uwage ciesze sie że moge rozwijać swoje hobby sprawiając ci radość💌💟</div>
 
-  <div class="big-heart" id="bigHeart">💗</div>
+<script>
+const input = document.getElementById('inputBox');
+const result = document.getElementById('result');
+const rebus = document.getElementById('rebus');
+const heartStage = document.getElementById('heartStage');
+const bigHeart = document.getElementById('bigHeart');
+const finalText = document.getElementById('finalText');
+const train = document.getElementById('train');
 
-  <div class="final-text" id="finalText">
-    dziękuje że jesteś, sprawiasz że zawsze czuje że moge na ciebie liczyć i że mam w tobie wsparcie doceniam wzytko co dla mnie robisz nawet nie wiesz jak wiele dla mnie zmaczysz
-  </div>
+let clicks = 0;
 
-  <script>
-    const input = document.getElementById('answer');
-    const msg = document.getElementById('msg');
-    const rebus = document.getElementById('rebus');
-    const title = document.getElementById('title');
-    const bigHeart = document.getElementById('bigHeart');
-    const finalText = document.getElementById('finalText');
+input.addEventListener('input', () => {
+  if (input.value.toLowerCase().replace(/\s+/g,'') === 'kochamcie') {
+    result.textContent = 'wiedziałem że dasz rade skarbie 💞';
+    setTimeout(() => {
+      rebus.style.display = 'none';
+      input.style.display = 'none';
+      result.style.display = 'none';
+      heartStage.style.display = 'block';
+    }, 1500);
+  }
+});
 
-    let heartClicks = 0;
-    let solved = false;
-
-    input.addEventListener('input', () => {
-      if (solved) return;
-
-      if (input.value.toLowerCase().replace(/\s+/g, '') === 'kochamcie') {
-        solved = true;
-        msg.style.display = 'block';
-
-        setTimeout(() => {
-          rebus.style.display = 'none';
-          input.style.display = 'none';
-          title.style.display = 'none';
-          msg.style.display = 'none';
-          bigHeart.style.display = 'block';
-        }, 1200);
-      }
-    });
-
-    bigHeart.addEventListener('click', () => {
-      heartClicks++;
-      if (heartClicks >= 10) {
-        bigHeart.style.display = 'none';
-        finalText.style.display = 'block';
-      }
-    });
-
-    function createHeart() {
-      const heart = document.createElement('div');
-      heart.className = 'heart';
-      heart.innerText = '❤️';
-      heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 6000);
-    }
-
-    function createCat() {
-      const cat = document.createElement('div');
-      cat.className = 'cat';
-      cat.innerText = '🐈';
-      cat.style.top = Math.random() * 80 + 'vh';
-      cat.style.animationDuration = (Math.random() * 5 + 8) + 's';
-      document.body.appendChild(cat);
-      setTimeout(() => cat.remove(), 12000);
-    }
-
-    function createBear() {
-      const bear = document.createElement('div');
-      bear.className = 'bear';
-      bear.innerText = '🧸';
-      bear.style.top = Math.random() * 80 + 'vh';
-      bear.style.animationDuration = (Math.random() * 5 + 8) + 's';
-      document.body.appendChild(bear);
-      setTimeout(() => bear.remove(), 12000);
-    }
-
-    setInterval(createHeart, 400);
-    setInterval(createCat, 3000);
-    setInterval(createBear, 4500);
-  </script>
+bigHeart.addEventListener('click', () => {
+  clicks++;
+  if (clicks === 10) {
+    finalText.style.display = 'block';
+    setTimeout(() => {
+      document.body.innerHTML = '';
+      document.body.appendChild(train);
+      train.style.display = 'block';
+    }, 20000);
+  }
+});
+</script>
 
 </body>
 </html>
