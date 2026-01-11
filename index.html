@@ -39,6 +39,22 @@
       display: none;
     }
 
+    .big-heart {
+      display: none;
+      font-size: 120px;
+      cursor: pointer;
+      margin-top: 80px;
+    }
+
+    .final-text {
+      display: none;
+      max-width: 800px;
+      margin: 80px auto 0 auto;
+      font-size: 24px;
+      line-height: 1.5;
+      color: #ffc0cb;
+    }
+
     .heart {
       position: absolute;
       color: red;
@@ -65,21 +81,53 @@
 </head>
 <body>
 
-  <h1>Rozwiąż rebus 💞</h1>
+  <h1 id="title">Rozwiąż rebus 💞</h1>
 
-  <div class="rebus">🐄👓🧅🍔🍉🧲🧅🧵📐</div>
+  <div class="rebus" id="rebus">🐄👓🧅🍔🍉🧲🧅🧵📐</div>
 
   <input id="answer" placeholder="tutaj piszesz kiciu" />
 
   <div class="message" id="msg">wiedziałem że dasz rade skarbie 💞</div>
 
+  <div class="big-heart" id="bigHeart">💗</div>
+
+  <div class="final-text" id="finalText">
+    dziękuje że jesteś, sprawiasz że zawsze czuje że moge na ciebie liczyć i że mam w tobie wsparcie doceniam wzytko co dla mnie robisz nawet nie wiesz jak wiele dla mnie zmaczysz
+  </div>
+
   <script>
     const input = document.getElementById('answer');
     const msg = document.getElementById('msg');
+    const rebus = document.getElementById('rebus');
+    const title = document.getElementById('title');
+    const bigHeart = document.getElementById('bigHeart');
+    const finalText = document.getElementById('finalText');
+
+    let heartClicks = 0;
+    let solved = false;
 
     input.addEventListener('input', () => {
+      if (solved) return;
+
       if (input.value.toLowerCase().replace(/\s+/g, '') === 'kochamcie') {
+        solved = true;
         msg.style.display = 'block';
+
+        setTimeout(() => {
+          rebus.style.display = 'none';
+          input.style.display = 'none';
+          title.style.display = 'none';
+          msg.style.display = 'none';
+          bigHeart.style.display = 'block';
+        }, 1200);
+      }
+    });
+
+    bigHeart.addEventListener('click', () => {
+      heartClicks++;
+      if (heartClicks >= 10) {
+        bigHeart.style.display = 'none';
+        finalText.style.display = 'block';
       }
     });
 
